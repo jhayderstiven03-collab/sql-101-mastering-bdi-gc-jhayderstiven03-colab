@@ -1,0 +1,187 @@
+erDiagram
+    PATIENT ||--o{ PATIENT_DOCUMENT : "has"
+    PATIENT ||--o{ PATIENT_ADDRESS : "has"
+    PATIENT ||--o{ PATIENT_PHONE : "has"
+    PATIENT ||--o{ PATIENT_POLICY : "has"
+    PATIENT ||--o{ PATIENT_EMERGENCY_CONTACT : "has"
+    PATIENT ||--o{ APPOINTMENT : "schedules"
+    
+    PROFESSIONAL ||--o{ PROFESSIONAL_SPECIALTY : "has"
+    PROFESSIONAL ||--o{ PROFESSIONAL_SCHEDULE : "has"
+    PROFESSIONAL ||--o{ APPOINTMENT : "handles"
+    
+    APPOINTMENT ||--o{ APPOINTMENT_ROOM : "assigned_to"
+    APPOINTMENT ||--o| MEDICAL_RECORD : "generates"
+    
+    MEDICAL_RECORD ||--o{ RECORD_DIAGNOSIS : "contains"
+    MEDICAL_RECORD ||--o{ RECORD_VITAL_SIGN : "contains"
+    MEDICAL_RECORD ||--o{ RECORD_PROCEDURE : "contains"
+    MEDICAL_RECORD ||--o{ PRESCRIPTION : "includes"
+
+    PATIENT {
+        int patient_id PK
+        varchar first_name
+        varchar middle_name
+        varchar last_name
+        varchar matern_name
+        date date_of_birth
+        char sex
+        varchar email
+        timestamp registration_date
+        boolean active
+    }
+
+    PATIENT_DOCUMENT {
+        int document_id PK
+        varchar document_type
+        varchar document_number
+        varchar issuing_country
+        date issue_date
+        int patient_id FK
+    }
+
+    PATIENT_ADDRESS {
+        int address_id PK
+        varchar address_type
+        varchar department
+        varchar city
+        varchar postal_code
+        text address_text
+        int patient_id FK
+    }
+
+    PATIENT_PHONE {
+        int phone_id PK
+        varchar phone_type
+        varchar phone_number
+        boolean is_primary
+        int patient_id FK
+    }
+
+    PATIENT_POLICY {
+        int policy_id PK
+        varchar policy_number
+        varchar insurer_name
+        date start_date
+        date end_date
+        varchar coverage_type
+        int patient_id FK
+    }
+
+    PATIENT_EMERGENCY_CONTACT {
+        int emergency_contact_id PK
+        varchar contact_name
+        varchar relationship
+        varchar phone
+        varchar email
+        text instructions
+        int patient_id FK
+    }
+
+    PROFESSIONAL {
+        int professional_id PK
+        varchar internal_code
+        varchar license_number UK
+        varchar first_names
+        varchar last_names
+        varchar email_professional
+        date hospital_entry_date
+        boolean active
+    }
+
+    PROFESSIONAL_SPECIALTY {
+        int professional_specialty_id PK
+        varchar specialty_name
+        varchar certification_number
+        date certification_date
+        int professional_id FK
+    }
+
+    PROFESSIONAL_SCHEDULE {
+        int schedule_id PK
+        varchar day_of_week
+        time start_time
+        time end_time
+        varchar modality
+        varchar location
+        int professional_id FK
+    }
+
+    APPOINTMENT {
+        int appointment_id PK
+        date appointment_date
+        time start_time
+        time end_time
+        varchar appointment_type
+        varchar status
+        text reason
+        varchar created_by
+        timestamp creation_date
+        int patient_id FK
+        int professional_id FK
+    }
+
+    APPOINTMENT_ROOM {
+        int appointment_room_id PK
+        varchar room_number
+        varchar room_type
+        varchar building
+        int floor_number
+        int appointment_id FK
+    }
+
+    MEDICAL_RECORD {
+        int record_id PK
+        timestamp record_datetime
+        varchar record_type
+        text summary_text
+        text clinical_notes
+        int appointment_id FK
+        int patient_id FK
+        int professional_id FK
+    }
+
+    RECORD_DIAGNOSIS {
+        int record_diagnosis_id PK
+        varchar diagnosis_code
+        varchar diagnosis_description
+        varchar diagnosis_type
+        int severity_level
+        int record_id FK
+    }
+
+    RECORD_VITAL_SIGN {
+        int vital_sign_id PK
+        varchar vital_type
+        decimal vital_value
+        varchar unit_of_measure
+        timestamp measurement_time
+        text observations
+        int record_id FK
+    }
+
+    RECORD_PROCEDURE {
+        int procedure_id PK
+        varchar procedure_code
+        varchar procedure_name
+        text procedure_description
+        timestamp execution_datetime
+        varchar performed_by
+        text notes
+        int record_id FK
+    }
+
+    PRESCRIPTION {
+        int prescription_id PK
+        varchar medication_name
+        varchar medication_code
+        varchar dosage
+        varchar frequency
+        varchar duration
+        varchar route
+        text instructions
+        date start_date
+        date end_date
+        int record_id FK
+        int professional_id FK
+    }
