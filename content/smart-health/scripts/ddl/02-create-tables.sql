@@ -78,7 +78,7 @@ COMMENT ON COLUMN smart_health.addresses.active IS 'Indica si la dirección est�
 -- Brief: Catalog of identification document types (CC, CE, PA, TI, etc.)
 CREATE TABLE IF NOT EXISTS smart_health.document_types (
     document_type_id SERIAL PRIMARY KEY,
-    type_name VARCHAR(70) NOT NULL UNIQUE,
+    type_name VARCHAR(70) NOT NULL UNIQUE,  
     type_code VARCHAR(10) NOT NULL UNIQUE,
     description TEXT
 );
@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS smart_health.medications (
     active_ingredient VARCHAR(200) NOT NULL,
     presentation VARCHAR(100) NOT NULL
 );
+
 
 COMMENT ON TABLE smart_health.medications IS 'Catálogo de medicamentos con código ATC';
 COMMENT ON COLUMN smart_health.medications.medication_id IS 'Identificador único del medicamento';

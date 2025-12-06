@@ -58,22 +58,33 @@ ORDER BY T1.department_name;
 -- 5. Contar cuántas citas ha tenido cada paciente por estado de cita,
 -- mostrando el nombre del paciente, estado de la cita y cantidad,
 -- ordenados por nombre de paciente y estado.
-
 SELECT
     T1.first_name || ' ' || COALESCE(T1.middle_name || ' ', '') || T1.first_surname || ' ' || COALESCE(T1.second_surname, '') AS paciente,
-    T2.status,
-    COUNT(T2.patient_id)
+    T2.status AS estado,
+    COUNT(T2.patient_id) AS cantidad
 FROM patients T1 
 JOIN appointments T2 ON T1.patient_id = T2.patient_id
-ORDER BY (T1.first_name) AND (T2.status);
+GROUP BY estado,paciente
+ORDER BY paciente,estado;
 
 -- 6. Calcular cuántos registros médicos ha realizado cada doctor,
 -- mostrando el nombre del doctor y el total de registros,
 -- filtrando solo doctores con más de 10 registros, ordenados por cantidad descendente.
 
+SELECT 
+     T1.first_name || ' ' ||T1.last_name AS medico,
+     COUNT(T2.medical_record_id) AS registros_medicos
+FROM doctors T1 
+JOIN medical_records T2 ON T1.doctor_id = T2.doctor_id
+GROUP BY (medico)
+HAVING ( COUNT(T2.doctor_id) > 10)
+ORDER BY registros_medicos DESC
+
 -- 7. Contar cuántas prescripciones se han emitido para cada medicamento,
 -- mostrando el nombre comercial del medicamento y el total de prescripciones,
 -- filtrando medicamentos con al menos 2 prescripciones, ordenados por cantidad descendente.
+
+FROM 
 
 -- 8. Calcular cuántos pacientes tienen alergias por cada medicamento,
 -- mostrando el nombre del medicamento y la cantidad de pacientes alérgicos,

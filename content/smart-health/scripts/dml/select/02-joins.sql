@@ -171,7 +171,7 @@ GROUP BY T1.blood_type
 
 SELECT
     T3.first_name || ' ' || COALESCE(T3.middle_name || ' ', '') || T3.first_surname || ' ' || COALESCE(T3.second_surname, '') AS nombre_paciente,
-    T2.first_name || ' ' || COALESCE(T2.middle_name || ' ', '') || T2.first_surname || ' ' || COALESCE(T2.second_surname, '') AS nombre_medico,
+    T2.first_name || ' ' ||T2.last_name AS nombre_medico,
     T9.speciality_name,
     T1.appointment_date,
     T7.demartment_name
